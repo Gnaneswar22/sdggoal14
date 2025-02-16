@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Below Water - Virtual Assistant</title>
+  <link rel="shortcut icon" href="avatar.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Basic reset and font styles */
+    @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap");
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Roboto Mono", monospace;
+    }
+
+    /* Header Styling */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #fff;
+    }
+    .logo img {
+      width: 50px;
+      height: auto;
+    }
+    .logo h1 {
+      font-size: 18px;
+      color: #333;
+      margin-left: 10px;
+    }
+    .main-nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+    .main-nav ul li {
+      margin: 0 10px;
+    }
+    .main-nav ul li a {
+      text-decoration: none;
+      color: #333;
+    }
+
+    /* Mic button styling within nav */
+    .nav-mic {
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
+    }
+    .nav-mic button.talk {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .nav-mic button.talk img {
+      width: 40px;
+      height: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="assets/logo/Sustainable_Development_Goal_14LifeBelowWater.svg" alt="Logo" />
+      <h1>Life <br> Below Water</h1>
+    </div>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="sdg14.html">SDG 14</a></li>
+        <li><a href="sdg.html">SDG Goals</a></li>
+        <li><a href="gallery">Gallery</a></li>
+        <li><a href="contact.php">Contact</a></li>
+        <li><a href="login.php">Login</a></li>
+        <!-- Mic button in the nav using the microphone image -->
+        <li class="nav-mic">
+          <button class="talk">
+            <img src="assets/images/microphone.png" alt="Microphone Icon" />
+            
+            <h1 class="content"> Click here to speak</h1>
+        
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Rest of your page content goes here -->
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Select the mic button from the nav
+      const micButton = document.querySelector('.nav-mic .talk');
+
+      // Check for Speech Recognition API support
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        console.error("Speech recognition is not supported in this browser.");
+        return;
+      }
+      
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      // Prevent default action and attach click event
+      micButton.addEventListener('click', function(event) {
+        event.preventDefault(); 
+        console.log("Mic button clicked: starting recognition.");
+        recognition.start();
+      });
+
+      // When speech is recognized, process the result
+      recognition.addEventListener('result', function(event) {
+        const transcript = event.results[event.resultIndex][0].transcript;
+        console.log("Heard:", transcript);
+        takeCommand(transcript.toLowerCase());
+      });
+
+      // Error handling for recognition
+      recognition.addEventListener('error', function(event) {
+        console.error("Speech recognition error:", event.error);
+      });
+
+      // Function to speak text using the Speech Synthesis API
+      function speak(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+        window.speechSynthesis.speak(utterance);
+      }
+      
+      // Command processing based on recognized speech
+      function takeCommand(message) {
+        console.log("Processing command:", message);
+        if (message.includes('hey') || message.includes('hello')) {
+          speak("Hello Sir, How may I help you?");
+        } else if (message.includes('who am i') || message.includes('who is your master') || message.includes("who created you")) {
+          speak("You are Prince, my master, who created me.");
+        } else if (message.includes("open google")) {
+          window.open("https://google.com", "_blank");
+          speak("Opening Google...");
+        } else if (message.includes("open youtube")) {
+          window.open("https://youtube.com", "_blank");
+          speak("Opening Youtube...");
+        } else if (message.includes("open facebook")) {
+          window.open("https://facebook.com", "_blank");
+          speak("Opening Facebook...");
+        } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
+          window.open(`https://www.google.com/search?q=${message.replace(/\s/g, '+')}`, "_blank");
+          speak("This is what I found on the internet regarding " + message);
+        } else if (message.includes('wikipedia')) {
+          window.open(`https://en.wikipedia.org/wiki/${message.replace("wikipedia", "").trim()}`, "_blank");
+          speak("This is what I found on Wikipedia regarding " + message);
+        } else if (message.includes('time')) {
+          const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
+          speak("The current time is " + time);
+        } else if (message.includes('date')) {
+          const date = new Date().toLocaleString(undefined, { month: "short", day: "numeric" });
+          speak("Today's date is " + date);
+        } else if (message.includes('calculator')) {
+          window.open('Calculator:///', "_blank");
+          speak("Opening Calculator");
+        } else if (message.includes('wordpad')) {
+          window.open('WordPad:///', "_blank");
+          speak("Opening Word Pad");
+        } else {
+          window.open(`https://www.google.com/search?q=${message.replace(/\s/g, '+')}`, "_blank");
+          speak("I found some information for " + message + " on Google");
+        }
+      }
+    });
+  </script>
+</body>
+</html>

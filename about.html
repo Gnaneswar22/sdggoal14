@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marine Pollution and Health Effects</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #005f73, #0a9396);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #005f73;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #94d2bd;
+            padding-bottom: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 2rem 0;
+        }
+
+        .image-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .image-caption {
+            padding: 1rem;
+            background: #f8f9fa;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .stat-box {
+            background: #e9ecef;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: #005f73;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Health Effects Section Styles */
+        .ocean_poll {
+          
+            margin-top: 10rem;
+            padding: 2rem 0;
+            background-color: #f8f9fa;
+        }
+
+        .ocean_poll .container {
+            width: 800px;
+            height: 600px;
+            position: relative;
+        }
+
+        .center-hex {
+            position: absolute;
+            left: 50%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 130px;
+            background-color: #0a2240;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            z-index: 3;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .center-hex:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .effects {
+            position: absolute;
+            width: 120px;
+            height: 104px;
+            background-color: #0066cc;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.5s ease;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        /* Position hexagons */
+        .rashes { left: 100px; top: 100px; background-color: #0a2240; transition-delay: 0.1s; }
+        .diarrhea { left: 100px; top: 250px; background-color: #0066cc; transition-delay: 0.2s; }
+        .parkinsons { left: 100px; top: 400px; background-color: #29b6f6; transition-delay: 0.3s; }
+        .stomach { left: 340px; top: 40px; background-color: #0a2240; transition-delay: 0.4s; }
+        .reproductive { left: 340px; top: 450px; background-color: #29b6f6; transition-delay: 0.5s; }
+        .hormonal { right: 100px; top: 100px; background-color: #29b6f6; transition-delay: 0.6s; }
+        .kidney { right: 100px; top: 250px; background-color: #0066cc; transition-delay: 0.7s; }
+        .nervous { right: 100px; top: 400px; background-color: #0a2240; transition-delay: 0.8s; }
+
+        .network-line {
+            position: absolute;
+            background-color: #0a2240;
+            height: 2px;
+            width: 50px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            transform-origin: left center;
+            z-index: 1;
+        }
+
+        .container.active .effects {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .container.active .network-line {
+            opacity: 1;
+        }
+
+        /* Popup styles */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-popup {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .popup-header {
+            margin-bottom: 20px;
+            color: #0a2240;
+            border-bottom: 2px solid #0a2240;
+            padding-bottom: 10px;
+        }
+
+        .popup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .popup-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .popup-image:hover {
+            transform: scale(1.05);
+        }
+
+        .popup-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+        }
+
+        .popup-text {
+            color: #333;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        .ocean_poll {
+    margin-top: 4rem;
+    padding: 4rem 0;
+    background-color: #f8f9fa;
+    min-height: 800px; /* Increased height */
+}
+
+.ocean_poll .container {
+    width: 1000px; /* Increased width */
+    height: 800px; /* Increased height */
+    position: relative;
+    margin: 0 auto;
+}
+
+/* Adjust hexagon positions */
+.rashes { left: 100px; top: 200px; }
+.diarrhea { left: 100px; top: 400px; }
+.parkinsons { left: 100px; top: 600px; }
+.stomach { left: 440px; top: 150px; }
+.reproductive { left: 440px; top: 650px; }
+.hormonal { right: 100px; top: 200px; }
+.kidney { right: 100px; top: 400px; }
+.nervous { right: 100px; top: 600px; }
+.network-line {
+    position: absolute;
+    background-color: #0a2240;
+    height: 2px;
+    width: 50px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    transform-origin: left center;
+    z-index: 1;
+}
+
+.container.active .network-line {
+    opacity: 1;
+}
+
+/* Add hover effect for hexagons */
+.effects:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+
+/* Add pulse animation to center hexagon */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255,255,255,0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    }
+}
+
+.center-hex {
+    animation: pulse 2s infinite;
+}
+.main-nav{
+    margin-left: 30%;
+}
+    </style>
+</head>
+<body>
+    <!-- Main Content Section -->
+    <header>
+        <div class="container">
+            <h1>Marine Pollution</h1>
+            <p>Understanding the Impact on Our Oceans</p>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="sdg14.html">SDG 14</a></li>
+                <li><a href="sdg.html">SDG Goals</a></li>
+                
+                <li><a href="contact.php">Contact</a></li>
+                <li><a href="login.php">Login</a></li>
+
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="content-section">
+            <h2>What is Marine Pollution?</h2>
+            <p>Marine pollution occurs when harmful substances – chemicals, particles, industrial waste, agricultural waste, and residential waste – enter the ocean. This contamination disrupts marine ecosystems, threatens marine life, and impacts human health and economic activities.</p>
+
+            <div class="stat-box">
+                <div class="stat-number">8 Million</div>
+                <p>Tons of plastic enter our oceans every year</p>
+            </div>
+
+            <div class="image-grid">
+                <div class="image-card">
+                    <img src="images/ocean pollution.jpg" alt="Ocean Pollution">
+                    <div class="image-caption">Plastic debris polluting ocean waters</div>
+                </div>
+                <div class="image-card">
+                    <img src="images/beach pollution.jpg" alt="Beach Pollution">
+                    <div class="image-caption">Plastic waste washed up on beaches</div>
+                </div>
+                <div class="image-card">
+                    <img src="images/cleanup efforts.jpg" alt="Ocean Cleanup">
+                    <div class="image-caption">Cleanup efforts to combat marine pollution</div>
+                </div>
+            </div>
+
+            <h2>Major Types of Marine Pollution</h2>
+            <p>1. <strong>Plastic Pollution:</strong> The most visible form of marine pollution, including microplastics and larger debris.</p>
+            <p>2. <strong>Chemical Pollution:</strong> Industrial discharge, oil spills, and agricultural runoff containing pesticides.</p>
+            <p>3. <strong>Nutrient Pollution:</strong> Excess nitrogen and phosphorus from fertilizers causing algal blooms.</p>
+            <p>4. <strong>Noise Pollution:</strong> Human activities disrupting marine life communication and navigation.</p>
+        </section>
+
+        <!-- Health Effects Section -->
+        <section class="ocean_poll">
+            <div class="container" id="health-effects-container">
+                <h1>Health Effects of Ocean Pollution</h1>
+                <h2>Health Problems that can be Caused by Ocean Pollution</h2>
+
+                <div class="center-hex" onclick="toggleNetwork()">
+                    <i class="fas fa-water" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                    <div>OCEAN POLLUTION</div>
+                </div>
+
+                <div class="effects rashes">Rashes</div>
+                <div class="effects diarrhea">Diarrhea</div>
+                <div class="effects parkinsons">Parkinson's</div>
+                <div class="effects stomach">Stomach Aches</div>
+                <div class="effects reproductive">Reproductive Problems</div>
+                <div class="effects hormonal">Hormonal Issues</div>
+                <div class="effects kidney">Kidney Damage</div>
+                <div class="effects nervous">Damage to the Nervous System</div>
+
+                <!-- Popup Structure -->
+                <div class="popup-overlay" id="popup">
+                    <div class="popup-content">
+                        <span class="close-popup" onclick="closePopup()">&times;</span>
+                        <div class="popup-header">
+                            <h2 id="popup-title">Title</h2>
+                        </div>
+                        <div class="popup-grid" id="popup-media"></div>
+                        <div class="popup-text" id="popup-description"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const popupContent = {
+    'rashes': {
+        title: 'Ocean Pollution Related Skin Rashes',
+        images: [
+            'images/skin racese.jpg',
+            'images/rash-red-inflamed-reddish.jpg'
+        ],
+        videos: ['https://youtu.be/77PO2U7g0FM?si=3I-002d7W1eaVrkt'],
+        description: 'Ocean pollution can cause various skin conditions and rashes through contact with contaminated water. Common pollutants like chemicals, algal toxins, and microplastics can trigger skin irritation, dermatitis, and other inflammatory responses. Symptoms may include redness, itching, swelling, and burning sensations.'
+    },
+    'diarrhea': {
+        title: 'Gastrointestinal Issues from Ocean Pollution',
+        images: [
+            'images/diarrhea.jpg',
+            'images/diarrhea1.jpg'
+        ],
+        videos: ['https://www.youtube.com/embed/https://youtu.be/EGtihfAhd_c?si=QiqOqMG_UCYtNAgs'],
+        description: 'Exposure to contaminated ocean water can lead to severe gastrointestinal problems. Bacteria, viruses, and toxic algae in polluted water can cause diarrhea, nausea, vomiting, and abdominal pain. These symptoms often appear within 24-48 hours after exposure.'
+    },
+    'parkinsons': {
+        title: "Parkinson's Disease and Ocean Pollution",
+        images: [
+            'images/parkinsons.jpg',
+            'images/parkinsons1.jpg'
+        ],
+        videos: ['https://www.youtube.com/embed/https://youtu.be/7upHDhAmkqU?si=ADE8J6lj2_aTP1Ta'],
+        description: 'Research suggests links between certain ocean pollutants, particularly heavy metals and industrial chemicals, and increased risk of Parkinson\'s disease. These toxins can accumulate in marine life and enter the human food chain, potentially affecting neurological function.'
+    },
+    'stomach': {
+        title: 'Stomach Problems from Ocean Pollution',
+        images: [
+            'images/stomach.jpg',
+            'images/stomach1.jpg'
+        ],
+        videos: ['https://youtu.be/Pi82WunMsqw?si=YYSi9cK20cpn6uIk'],
+        description: 'Ocean pollutants can cause various stomach issues including chronic pain, digestive problems, and inflammation. Chemical contaminants and microplastics in seafood can lead to long-term gastrointestinal health issues.'
+    },
+    'reproductive': {
+        title: 'Reproductive Health Impact',
+        images: [
+            'images/reproductive.jpg',
+            'images/reproductive1.jpg'
+        ],
+        videos: ['https://www.youtube.com/embed/https://youtu.be/8vCwcWQycOE?si=-YWKOLnhnFO-hh3M'],
+        description: 'Ocean pollution, particularly endocrine-disrupting chemicals, can significantly impact reproductive health. These pollutants can affect fertility, hormone production, and reproductive organ function in both males and females.'
+    },
+    'hormonal': {
+        title: 'Hormonal System Disruption',
+        images: [
+            'images/hormonal.jpg',
+            'images/hormonal1.png'
+        ],
+        videos: ['https://www.youtube.com/embed/Uf5q0T9Ky2chttps://youtu.be/VtBcvW6Exwo?si=Bnh0zd48H32UPCa9'],
+        description: 'Marine pollutants can disrupt the endocrine system, affecting hormone production and regulation. This can lead to various health issues including thyroid problems, metabolic disorders, and developmental issues.'
+    },
+    'kidney': {
+        title: 'Kidney Damage from Ocean Pollution',
+        images: [
+            'images/kidney.jpg',
+            'images/kidney1.jpg',
+            'images/kidney2.jpg'
+        ],
+        videos: ['https://www.youtube.com/embed/https://youtu.be/XZz08gk8_6M?si=6prRrpFZvObPDd6V'],
+        description: 'Heavy metals and other toxins from ocean pollution can accumulate in the body and cause kidney damage. Chronic exposure can lead to reduced kidney function, inflammation, and increased risk of kidney disease.'
+    },
+    'nervous': {
+        title: 'Nervous System Effects',
+        images: [
+            'images/nervous.jpg',
+            'images/nervous1.jpg'
+        ],
+        videos: ['https://www.youtube.com/embed/https://youtu.be/RNLceVI8jcc?si=UOmHTOKapCRYuRty'],
+        description: 'Ocean pollutants, especially neurotoxins and heavy metals, can severely impact the nervous system. Effects may include cognitive impairment, memory problems, coordination issues, and other neurological symptoms.'
+    }
+};
+
+// Add this function to create connecting lines
+function createConnectingLines() {
+    const container = document.getElementById('health-effects-container');
+    const centerHex = container.querySelector('.center-hex');
+    const effects = container.querySelectorAll('.effects');
+
+    effects.forEach(effect => {
+        const line = document.createElement('div');
+        line.className = 'network-line';
+        
+        const centerRect = centerHex.getBoundingClientRect();
+        const effectRect = effect.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+
+        // Calculate positions relative to container
+        const centerX = centerRect.left - containerRect.left + centerRect.width/2;
+        const centerY = centerRect.top - containerRect.top + centerRect.height/2;
+        const effectX = effectRect.left - containerRect.left + effectRect.width/2;
+        const effectY = effectRect.top - containerRect.top + effectRect.height/2;
+
+        // Calculate line length and angle
+        const length = Math.sqrt(Math.pow(effectX - centerX, 2) + Math.pow(effectY - centerY, 2));
+        const angle = Math.atan2(effectY - centerY, effectX - centerX);
+
+        // Position and rotate line
+        line.style.width = `${length}px`;
+        line.style.transform = `rotate(${angle}rad)`;
+        line.style.left = `${centerX}px`;
+        line.style.top = `${centerY}px`;
+
+        container.insertBefore(line, container.firstChild);
+    });
+}
+
+// Call this function when the page loads
+window.addEventListener('load', createConnectingLines);
+
+
+
+
+// Wait for the document to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click handlers to all hexagons
+    document.querySelectorAll('.effects').forEach(hex => {
+        hex.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event bubbling
+            console.log('Hexagon clicked:', this.className); // Debug log
+            
+            // Get the condition type from the hex's classes
+            const type = Array.from(this.classList)
+                .find(className => className !== 'effects');
+            
+            if (type && popupContent[type]) {
+                openPopup(type);
+            }
+        });
+    });
+
+    // Add click handler for closing popup
+    document.querySelector('.close-popup').addEventListener('click', function() {
+        closePopup();
+    });
+
+    // Close popup when clicking outside
+    document.querySelector('.popup-overlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closePopup();
+        }
+    });
+});
+
+// Modified openPopup function with error handling
+function openPopup(type) {
+    console.log('Opening popup for:', type); // Debug log
+    const popup = document.getElementById('popup');
+    const content = popupContent[type];
+    
+    if (!content) {
+        console.error('No content found for type:', type);
+        return;
+    }
+
+    try {
+        document.getElementById('popup-title').textContent = content.title;
+        
+        const mediaContainer = document.getElementById('popup-media');
+        mediaContainer.innerHTML = '';
+
+        // Add images if they exist
+        if (content.images && content.images.length > 0) {
+            content.images.forEach(img => {
+                const imgElement = document.createElement('img');
+                imgElement.src = img;
+                imgElement.className = 'popup-image';
+                imgElement.alt = content.title;
+                mediaContainer.appendChild(imgElement);
+            });
+        }
+
+        // Add videos if they exist
+        if (content.videos && content.videos.length > 0) {
+            content.videos.forEach(video => {
+                const iframe = document.createElement('iframe');
+                iframe.src = video;
+                iframe.className = 'popup-video';
+                iframe.allowFullscreen = true;
+                mediaContainer.appendChild(iframe);
+            });
+        }
+
+        document.getElementById('popup-description').textContent = content.description;
+        popup.style.display = 'flex';
+    } catch (error) {
+        console.error('Error opening popup:', error);
+    }
+}
+
+// Close popup function
+function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+}
+
+// Toggle network function
+function toggleNetwork() {
+    const container = document.getElementById('health-effects-container');
+    container.classList.toggle('active');
+}
+
+// Create connecting lines
+function createConnectingLines() {
+    const container = document.getElementById('health-effects-container');
+    const centerHex = container.querySelector('.center-hex');
+    const effects = container.querySelectorAll('.effects');
+
+    effects.forEach(effect => {
+        const line = document.createElement('div');
+        line.className = 'network-line';
+        
+        const centerRect = centerHex.getBoundingClientRect();
+        const effectRect = effect.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+
+        const centerX = centerRect.left - containerRect.left + centerRect.width/2;
+        const centerY = centerRect.top - containerRect.top + centerRect.height/2;
+        const effectX = effectRect.left - containerRect.left + effectRect.width/2;
+        const effectY = effectRect.top - containerRect.top + effectRect.height/2;
+
+        const length = Math.sqrt(Math.pow(effectX - centerX, 2) + Math.pow(effectY - centerY, 2));
+        const angle = Math.atan2(effectY - centerY, effectX - centerX);
+
+        line.style.width = `${length}px`;
+        line.style.transform = `rotate(${angle}rad)`;
+        line.style.left = `${centerX}px`;
+        line.style.top = `${centerY}px`;
+
+        container.insertBefore(line, container.firstChild);
+    });
+}
+
+// Call createConnectingLines when the page loads
+window.addEventListener('load', createConnectingLines);
+
+  </script>
+</body>
+</html>

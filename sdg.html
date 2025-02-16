@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SDG Goals Wheel</title>
+ <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+     
+        body{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding:0;
+            background: linear-gradient(180deg, #00447c, #006994, #1e90ff);
+            min-height: 130vh;
+            overflow-x: hidden;
+        }
+        .header {
+    background-color: #00447c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2%;
+  position:relative;
+  width: 100%;
+  z-index: 1000;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px;
+  margin-right: 20px;
+}
+
+.logo h1 {
+  font-size: 24px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-light);
+}
+
+.main-nav ul {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  align-items: center;
+}
+
+.main-nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 3px;
+  transition: var(--transition-fast);
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--text-light);
+  transition: var(--transition-fast);
+}
+
+.main-nav a:hover::after {
+  width: 100%;
+}
+
+/* Header Scroll State */
+.header-scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  padding: 1rem 5%;
+}
+
+.header-scrolled .logo h1 {
+  color: rgb(14, 98, 122);
+}
+
+.header-scrolled .main-nav a {
+  color: var(--text-dark);
+}
+
+.header-scrolled .main-nav a::after {
+  background: var(--primary-color);
+}
+
+
+   
+        .sdg-wheel {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin: 5rem auto;
+        }
+
+        .center {
+            padding: 2rem;
+            position: absolute;
+            top: 55%;
+            left: 55%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        .goal {
+            
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 1;
+        }
+
+        .goal:hover {
+            transform: scale(1.1);
+        }
+
+        .goal i {
+            font-size: 24px;
+        }
+
+        /* Popup styles */
+        .popup {
+            display: none;
+            position: absolute;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 200px;
+            z-index: 3;
+        }
+
+        .popup img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .popup h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .popup p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+
+
+
+.goal:hover .popup {
+    display: block;
+    transform: translateY(0);
+    opacity: 1;
+}
+.main{
+    transform: scale(0.8);
+}
+    </style>
+  
+</head>
+<body>
+
+    <section>
+        <header class="header">
+            <div class="logo">
+                <img src="assets/logo/Sustainable_Development_Goal_14LifeBelowWater.svg" alt="Logo" />
+                <h1>Life <br> Below Water</h1>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="sdg14.html">SDG 14</a></li>
+                    <li><a href="sdg.html">SDG Goals</a></li>
+                    
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="login.php">Login</a></li>
+                     <!-- Mic button in the nav using the downloaded microphone icon -->
+        
+                </ul>
+            </nav>
+        </header>
+    </section>
+
+    <section class="main">
+    <div class="sdg-wheel">
+        <div class="center">
+            <h3>17<br>SUSTAINABLE<br>DEVELOPMENT<br>GOALS</h3>
+        </div>
+    </div>
+    </section>
+    <script>
+       
+// First, define all 17 SDG goals with their details
+const goals = [
+    { 
+        color: '#E5243B', 
+        icon: 'fas fa-users',
+        title: 'No Poverty',
+        description: 'End poverty in all its forms everywhere. Aims to ensure social protection, equal rights to economic resources.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-01-1024x1024.png'
+    },
+    { 
+        color: '#DDA63A', 
+        icon: 'fas fa-utensils',
+        title: 'Zero Hunger',
+        description: 'End hunger, achieve food security and improved nutrition, and promote sustainable agriculture.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-02-1024x1024.png'
+    },
+    { 
+        color: '#4C9F38', 
+        icon: 'fas fa-heartbeat',
+        title: 'Good Health and Well-being',
+        description: 'Ensure healthy lives and promote well-being for all at all ages.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-03-1024x1024.png'
+    },
+    { 
+        color: '#C5192D', 
+        icon: 'fas fa-graduation-cap',
+        title: 'Quality Education',
+        description: 'Ensure inclusive and equitable quality education and promote lifelong learning opportunities for all.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-04-1024x1024.png'
+    },
+    { 
+        color: '#FF3A21', 
+        icon: 'fas fa-venus-mars',
+        title: 'Gender Equality',
+        description: 'Achieve gender equality and empower all women and girls.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-05-1024x1024.png'
+    },
+    { 
+        color: '#26BDE2', 
+        icon: 'fas fa-tint',
+        title: 'Clean Water and Sanitation',
+        description: 'Ensure availability and sustainable management of water and sanitation for all.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-06-1024x1024.png'
+    },
+    { 
+        color: '#FCC30B', 
+        icon: 'fas fa-bolt',
+        title: 'Affordable and Clean Energy',
+        description: 'Ensure access to affordable, reliable, sustainable and modern energy for all.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-07-1024x1024.png'
+    },
+    { 
+        color: '#A21942', 
+        icon: 'fas fa-chart-line',
+        title: 'Decent Work and Economic Growth',
+        description: 'Promote sustained, inclusive and sustainable economic growth, full and productive employment.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-08-1024x1024.png'
+    },
+    { 
+        color: '#FD6925', 
+        icon: 'fas fa-industry',
+        title: 'Industry, Innovation and Infrastructure',
+        description: 'Build resilient infrastructure, promote inclusive and sustainable industrialization.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-09-1024x1024.png'
+    },
+    { 
+        color: '#DD1367', 
+        icon: 'fas fa-building',
+        title: 'Reduced Inequalities',
+        description: 'Reduce inequality within and among countries.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-10-1024x1024.png'
+    },
+    { 
+        color: '#FD9D24', 
+        icon: 'fas fa-city',
+        title: 'Sustainable Cities and Communities',
+        description: 'Make cities and human settlements inclusive, safe, resilient and sustainable.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-11-1024x1024.png'
+    },
+    { 
+        color: '#BF8B2E', 
+        icon: 'fas fa-recycle',
+        title: 'Responsible Consumption and Production',
+        description: 'Ensure sustainable consumption and production patterns.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-12-1024x1024.png'
+    },
+    { 
+        color: '#3F7E44', 
+        icon: 'fas fa-leaf',
+        title: 'Climate Action',
+        description: 'Take urgent action to combat climate change and its impacts.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-13-1024x1024.png'
+    },
+    { 
+        color: '#0A97D9', 
+        icon: 'fas fa-fish',
+        title: 'Life Below Water',
+        description: 'Conserve and sustainably use the oceans, seas and marine resources for sustainable development.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-14-1024x1024.png'
+    },
+    { 
+        color: '#56C02B', 
+        icon: 'fas fa-tree',
+        title: 'Life on Land',
+        description: 'Protect, restore and promote sustainable use of terrestrial ecosystems, sustainably manage forests.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-15-1024x1024.png'
+    },
+    { 
+        color: '#00689D', 
+        icon: 'fas fa-balance-scale',
+        title: 'Peace, Justice and Strong Institutions',
+        description: 'Promote peaceful and inclusive societies for sustainable development, provide access to justice for all.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-16-1024x1024.png'
+    },
+    { 
+        color: '#19486A', 
+        icon: 'fas fa-globe-americas',
+        title: 'Partnerships for the Goals',
+        description: 'Strengthen the means of implementation and revitalize the global partnership for sustainable development.',
+        image: 'https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-17-1024x1024.png'
+    }
+];
+
+// Function to create the SDG wheel
+function createGoals() {
+    const wheel = document.querySelector('.sdg-wheel');
+    const radius = 170; // Distance from center
+    const totalGoals = goals.length;
+
+    // Create connecting lines first (so they appear behind the goals)
+    goals.forEach((_, index) => {
+        const angle = ((2 * Math.PI * index) / totalGoals) - (Math.PI / 2);
+        const line = document.createElement('div');
+        line.className = 'connection-line';
+        line.style.width = `${radius}px`;
+        line.style.left = '250px';
+        line.style.top = '250px';
+        line.style.transform = `rotate(${angle}rad)`;
+        wheel.insertBefore(line, wheel.firstChild);
+    });
+
+    // Create goal elements
+    goals.forEach((goal, index) => {
+        const angle = ((2 * Math.PI * index) / totalGoals) - (Math.PI / 2);
+        const x = radius * Math.cos(angle);
+        const y = radius * Math.sin(angle);
+
+        // Create goal container
+        const goalElement = document.createElement('div');
+        goalElement.className = 'goal';
+        goalElement.style.backgroundColor = goal.color;
+        goalElement.style.left = `${250 + x}px`;
+        goalElement.style.top = `${250 + y}px`;
+
+        // Create icon
+        const icon = document.createElement('i');
+        icon.className = goal.icon;
+        goalElement.appendChild(icon);
+
+        // Create popup
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.innerHTML = `
+            <img src="${goal.image}" alt="${goal.title}">
+            <h4>${goal.title}</h4>
+            <p>${goal.description}</p>
+        `;
+
+        // Position popup based on quadrant
+        goalElement.addEventListener('mouseenter', () => {
+            popup.style.display = 'block';
+            const rect = goalElement.getBoundingClientRect();
+            const wheelRect = wheel.getBoundingClientRect();
+            
+            // Calculate popup position
+            if (x > 0) {
+                popup.style.left = '70px';
+                popup.style.right = 'auto';
+            } else {
+                popup.style.right = '70px';
+                popup.style.left = 'auto';
+            }
+            
+            if (y > 0) {
+                popup.style.top = '0';
+                popup.style.bottom = 'auto';
+            } else {
+                popup.style.bottom = '0';
+                popup.style.top = 'auto';
+            }
+        });
+
+        goalElement.addEventListener('mouseleave', () => {
+            popup.style.display = 'none';
+        });
+
+        goalElement.appendChild(popup);
+        wheel.appendChild(goalElement);
+    });
+}
+
+// Initialize the wheel when the document is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    createGoals();
+});
+
+// Optional: Add animation when scrolling to the wheel
+function handleScroll() {
+    const wheel = document.querySelector('.sdg-wheel');
+    const wheelPosition = wheel.getBoundingClientRect().top;
+    const screenPosition = window.innerHeight;
+
+    if (wheelPosition < screenPosition) {
+        wheel.style.opacity = '1';
+        wheel.style.transform = 'translateY(0)';
+        window.removeEventListener('scroll', handleScroll);
+    }
+}
+
+window.addEventListener('scroll', handleScroll);
+
+    </script>
+</body>
+</html>

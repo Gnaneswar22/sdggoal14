@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SDG 14 Interactive Timeline</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(180deg, #00447c, #006994, #1e90ff);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        /* Header/Navigation */
+        .main{
+            margin-top: 10%;
+        }
+.header {
+    background-color: #00447c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 5%;
+  position:relative;
+  width: 100%;
+  z-index: 1000;
+  background: transparent;
+  transition: all 0.3s ease;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px;
+  margin-right: 20px;
+}
+
+.logo h1 {
+  font-size: 24px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-light);
+}
+
+.main-nav ul {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  align-items: center;
+}
+
+.main-nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  position: relative;
+  padding-bottom: 3px;
+  transition: var(--transition-fast);
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--text-light);
+  transition: var(--transition-fast);
+}
+
+.main-nav a:hover::after {
+  width: 100%;
+}
+
+/* Header Scroll State */
+.header-scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-sm);
+  padding: 1rem 5%;
+}
+
+.header-scrolled .logo h1 {
+  color: rgb(14, 98, 122);
+}
+
+.header-scrolled .main-nav a {
+  color: var(--text-dark);
+}
+
+.header-scrolled .main-nav a::after {
+  background: var(--primary-color);
+}
+
+
+        /* Underwater Effects */
+        .bubble {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: rise 8s infinite ease-in;
+            z-index: 0;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-20vh) scale(2);
+                opacity: 0;
+            }
+        }
+
+        .rock {
+            position: fixed;
+            bottom: -10px;
+            background: #463E3F;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            z-index: 1;
+        }
+
+        .seaweed {
+            position: fixed;
+            bottom: 0;
+            width: 20px;
+            background: linear-gradient(to top, #0d5c3e, #167a52);
+            border-radius: 50px;
+            transform-origin: bottom;
+            animation: sway 5s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        /* Mini Control Panel */
+        .mini-control {
+            margin-top: 15%;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .mini-logo {
+            width: 50px;
+            height: 50px;
+            background: #0A97D9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+
+        .mini-logo:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+        }
+
+        .mini-logo img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .toggle-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #00447c;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+        }
+
+        .toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+        }
+
+        /* Main Container */
+        .circle-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 50px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .main-logo {
+            width: 150px;
+            height: 150px;
+            background: #0A97D9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 50px;
+        }
+
+        .main-logo:hover {
+            transform: scale(1.1);
+        }
+
+        .main-logo img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        .modules-line {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .module {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0);
+            font-weight: bold;
+            color: #00447c;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+            position: relative;
+        }
+
+        .module.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .module:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,255,255,0.4);
+        }
+
+        .module .tooltip {
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            width: 250px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            margin-left: 20px;
+            z-index: 100;
+        }
+
+        .module:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .connecting-line {
+            width: 2px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Animations */
+        .module.closing {
+            animation: closeModule 0.5s ease forwards;
+        }
+
+        @keyframes closeModule {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        @keyframes openModule {
+            from {
+                opacity: 0;
+                transform: scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+            <img src="assets/logo/Sustainable_Development_Goal_14LifeBelowWater.svg" alt="Logo" />
+            <h1>Life <br> Below Water</h1>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="sdg14.html">SDG 14</a></li>
+                <li><a href="sdg.html">SDG Goals</a></li>
+            
+                <li><a href="contact.php">Contact</a></li>
+                <li><a href="login.php">Login</a></li>
+                 <!-- Mic button in the nav using the downloaded microphone icon -->
+    
+            </ul>
+        </nav>
+    </header>
+  
+<section class="main">
+    <div class="mini-control">
+        <div class="mini-logo">
+            <img src="https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-14-1024x1024.png" 
+                 alt="SDG 14 Mini Logo">
+        </div>
+        <button class="toggle-btn" id="toggleBtn">▼</button>
+    </div>
+
+    <div id="underwaterEffects"></div>
+    
+    <div class="circle-container">
+        <div class="main-logo" id="mainLogo">
+            <img src="https://www.un.org/sustainabledevelopment/wp-content/uploads/2019/08/E-Goal-14-1024x1024.png" 
+                 alt="SDG 14 Logo">
+        </div>
+        <div class="modules-line" id="modulesLine"></div>
+    </div>
+
+</section>
+    <script>
+        const modules = [
+            {
+                id: '14.1',
+                title: 'Prevent and reduce marine pollution',
+                description: 'By 2025, prevent and significantly reduce marine pollution of all kinds, particularly from land-based activities.'
+            },
+            {
+                id: '14.2',
+                title: 'Protect marine and coastal ecosystems',
+                description: 'By 2020, sustainably manage and protect marine and coastal ecosystems to avoid significant adverse impacts.'
+            },
+            {
+                id: '14.3',
+                title: 'Reduce ocean acidification',
+                description: 'Minimize and address the impacts of ocean acidification, including through enhanced scientific cooperation.'
+            },
+            {
+                id: '14.4',
+                title: 'Sustainable fishing',
+                description: 'By 2020, effectively regulate harvesting and end overfishing, illegal, unreported and unregulated fishing.'
+            },
+            {
+                id: '14.5',
+                title: 'Conserve coastal areas',
+                description: 'By 2020, conserve at least 10% of coastal and marine areas.'
+            },
+            {
+                id: '14.6',
+                title: 'End subsidies contributing to overfishing',
+                description: 'By 2020, prohibit certain forms of fisheries subsidies which contribute to overcapacity and overfishing.'
+            },
+            {
+                id: '14.7',
+                title: 'Increase economic benefits',
+                description: 'By 2030, increase the economic benefits to Small Island developing States and LDCs from sustainable use of marine resources.'
+            }
+        ];
+
+        let isOpen = false;
+
+        function createUnderwaterEffects() {
+            const container = document.getElementById('underwaterEffects');
+            
+            // Create bubbles
+            for(let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.left = `${Math.random() * 100}%`;
+                bubble.style.width = `${Math.random() * 20 + 10}px`;
+                bubble.style.height = bubble.style.width;
+                bubble.style.animationDelay = `${Math.random() * 8}s`;
+                container.appendChild(bubble);
+            }
+
+            // Create rocks
+            for(let i = 0; i < 5; i++) {
+                const rock = document.createElement('div');
+                rock.className = 'rock';
+                rock.style.left = `${Math.random() * 90}%`;
+                rock.style.width = `${Math.random() * 100 + 50}px`;
+                rock.style.height = `${Math.random() * 80 + 40}px`;
+                container.appendChild(rock);
+            }
+
+            // Create seaweed
+            for(let i = 0; i < 8; i++) {
+                const seaweed = document.createElement('div');
+                seaweed.className = 'seaweed';
+                seaweed.style.left = `${i * 15}%`;
+                seaweed.style.height = `${Math.random() * 100 + 100}px`;
+                seaweed.style.animationDelay = `${i * 0.5}s`;
+                container.appendChild(seaweed);
+            }
+        }
+
+        function toggleAllModules() {
+            const modules = document.querySelectorAll('.module');
+            const toggleBtn = document.getElementById('toggleBtn');
+            isOpen = !isOpen;
+
+            if (isOpen) {
+                // Open all modules
+                modules.forEach((module, index) => {
+                    setTimeout(() => {
+                        module.classList.add('visible');
+                        module.style.animation = `openModule 0.5s ease forwards`;
+                    }, index * 100);
+                });
+                toggleBtn.textContent = '▼';
+            } else {
+                // Close all modules
+                modules.forEach((module, index) => {
+                    setTimeout(() => {
+                        module.classList.remove('visible');
+                        module.style.animation = `closeModule 0.5s ease forwards`;
+                    }, (modules.length - index - 1) * 100);
+                });
+                toggleBtn.textContent = '▲';
+            }
+        }
+
+        function createModules() {
+            const container = document.getElementById('modulesLine');
+            
+            modules.forEach((module, index) => {
+                if (index > 0) {
+                    const line = document.createElement('div');
+                    line.className = 'connecting-line';
+                    container.appendChild(line);
+                }
+
+                const moduleElement = document.createElement('div');
+                moduleElement.className = 'module';
+                moduleElement.innerHTML = `
+                    ${module.id}
+                    <div class="tooltip">
+                        <h3>${module.title}</h3>
+                        <p>${module.description}</p>
+                    </div>
+                `;
+
+                moduleElement.addEventListener('click', () => {
+                    if (index < modules.length - 1) {
+                        const nextModule = document.querySelectorAll('.module')[index + 1];
+                        if (nextModule) {
+                            nextModule.classList.add('visible');
+                            nextModule.style.animation = 'openModule 0.5s ease forwards';
+                        }
+                    }
+                });
+
+                container.appendChild(moduleElement);
+            });
+        }
+
+        // Event Listeners
+        document.getElementById('mainLogo').addEventListener('click', function() {
+            const firstModule = document.querySelector('.module');
+            if (firstModule) {
+                firstModule.classList.add('visible');
+                firstModule.style.animation = 'openModule 0.5s ease forwards';
+            }
+        });
+
+        document.getElementById('toggleBtn').addEventListener('click', toggleAllModules);
+        document.querySelector('.mini-logo').addEventListener('click', toggleAllModules);
+
+        // Initialize
+        createUnderwaterEffects();
+        createModules();
+    </script>
+</body>
+</html>
